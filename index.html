@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tournament Bracket Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1 id="tournament-title">Tournament Bracket Generator</h1>
+    <button id="theme-toggle" aria-label="Toggle Theme">🌙</button>
+  </header>
+
+  <main>
+    <section id="config-section">
+      <h2>Setup Tournament</h2>
+      <form id="tournament-form">
+        <label for="tournament-name">Tournament Name:</label>
+        <input type="text" id="tournament-name" name="tournament-name" placeholder="Enter tournament name" required>
+
+        <label for="team-count">Number of Teams:</label>
+        <select id="team-count" name="team-count" required>
+          <option value="" disabled selected>Select team count</option>
+          <option value="4">4 Teams</option>
+          <option value="8">8 Teams</option>
+          <option value="16">16 Teams</option>
+          <option value="32">32 Teams</option>
+          <option value="64">64 Teams</option>
+        </select>
+
+        <button type="button" id="generate-bracket">Generate Bracket</button>
+        <button type="reset" id="reset-tournament">Reset</button>
+      </form>
+    </section>
+
+    <section id="bracket-section">
+      <h2>Bracket</h2>
+      <div id="bracket-container">
+        <!-- Bracket will be dynamically generated here -->
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
