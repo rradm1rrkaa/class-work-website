@@ -1,0 +1,143 @@
+/* CSS Variables for Light Theme */
+:root {
+    --primary-color: #A8C3A0; /* Matcha */
+    --secondary-color: #D7C4B7; /* Light Wood */
+    --background-color: #F9F8F6; /* Light Background */
+    --text-color: #2C3531; /* Dark Text */
+    --white-color: #FFFFFF; /* Pure White */
+  }
+  
+  /* CSS Variables for Dark Theme */
+  [data-theme="dark"] {
+    --primary-color: #4A5D4E; /* Swamp Green */
+    --secondary-color: #5C4033; /* Dark Wood */
+    --background-color: #1B2421; /* Dark Background */
+    --text-color: #E8ECE9; /* Light Text */
+  }
+  
+  /* Reset and Global Styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  h1, h2 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  button {
+    cursor: pointer;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  input, select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+  
+  input:focus, select:focus {
+    outline: 2px solid var(--primary-color);
+  }
+  
+  /* Header Styles */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+  }
+  
+  #theme-toggle {
+    background: none;
+    color: var(--white-color);
+    font-size: 1.5rem;
+  }
+  
+  /* Main Section Styles */
+  main {
+    padding: 1rem;
+  }
+  
+  #config-section {
+    margin-bottom: 2rem;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  #generate-bracket, #reset-tournament {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+  }
+  
+  #generate-bracket:hover, #reset-tournament:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  /* Bracket Section Styles */
+  #bracket-section {
+    margin-top: 2rem;
+  }
+  
+  #bracket-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    justify-items: center;
+  }
+  
+  .match-card {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .match-card:hover {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+  }
+  
+  /* Connectors (Lines/Branches) */
+  .connector {
+    width: 2px;
+    background-color: var(--secondary-color);
+    margin: 0 auto;
+    height: 20px;
+  }
+  
+  .connector-horizontal {
+    width: 100%;
+    height: 2px;
+  }
