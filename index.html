@@ -1,60 +1,59 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tournament Bracket Generator</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app-container">
-    <header class="main-header">
-      <div class="header-content">
-        <h1 id="tournament-title">Tournament Bracket Generator</h1>
-        <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
-          <span class="theme-icon">🌙</span>
-        </button>
-      </div>
-    </header>
+  <header>
+    <h1 id="tournament-title">Tournament Bracket Generator</h1>
+    <button id="theme-toggle" aria-label="Toggle Theme">
+      <span class="theme-icon">🌙</span>
+    </button>
+  </header>
 
-    <main class="main-content">
-      <section class="card config-card">
-        <h2>Настройка турнира</h2>
-        <form id="tournament-form">
-          <div class="form-group">
-            <label for="tournament-name">Название турнира</label>
-            <input type="text" id="tournament-name" placeholder="Например: Summer Cup 2026" required>
-          </div>
+  <main>
+    <section id="config-section">
+      <h2>Setup Tournament</h2>
+      <form id="tournament-form">
+        <label for="tournament-name">Tournament Name:</label>
+        <input type="text" id="tournament-name" name="tournament-name" placeholder="Enter tournament name" required>
 
-          <div class="form-group">
-            <label for="team-count">Количество команд</label>
-            <select id="team-count" required>
-              <option value="" disabled selected>Выберите количество</option>
-              <option value="4">4 команды</option>
-              <option value="8">8 команд</option>
-              <option value="16">16 команд</option>
-              <option value="32">32 команды</option>
-              <option value="64">64 команды</option>
-            </select>
-          </div>
+        <label for="team-count">Number of Teams:</label>
+        <select id="team-count" name="team-count" required>
+          <option value="" disabled selected>Select team count</option>
+          <option value="4">4 Teams</option>
+          <option value="8">8 Teams</option>
+          <option value="16">16 Teams</option>
+          <option value="32">32 Teams</option>
+          <option value="64">64 Teams</option>
+        </select>
 
-          <div class="form-actions">
-            <button type="button" id="generate-bracket" class="btn btn-primary">Сгенерировать сетку</button>
-            <button type="reset" id="reset-tournament" class="btn btn-secondary">Сброс</button>
-          </div>
-        </form>
-      </section>
-
-      <section class="card bracket-card">
-        <h2 id="display-tournament-title">Сетка турнира</h2>
-        <div id="bracket-container" class="bracket-tree">
-          <!-- Сетка генерируется здесь -->
+        <div id="team-inputs-container">
+          <!-- Dynamic team input fields will be generated here -->
         </div>
-      </section>
-    </main>
+
+        <button type="button" id="generate-bracket">Generate Bracket</button>
+        <button type="reset" id="reset-tournament">Reset</button>
+      </form>
+    </section>
+
+    <section id="bracket-section">
+      <h2>Bracket</h2>
+      <div id="bracket-container">
+        <!-- Bracket will be dynamically generated here -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Winner Modal -->
+  <div id="winner-modal" class="hidden">
+    <div class="modal-content">
+      <h2 id="winner-message">🏆 Победитель турнира: </h2>
+      <button id="close-modal">Закрыть</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
