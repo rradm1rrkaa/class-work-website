@@ -1,20 +1,22 @@
 // Theme Controller
 const themeToggle = document.getElementById("theme-toggle");
+const themeIcon = themeToggle.querySelector(".theme-icon");
 const currentTheme = localStorage.getItem("theme") || "light";
 
 document.documentElement.setAttribute("data-theme", currentTheme);
-
-themeToggle.textContent = currentTheme === "dark" ? "☀️" : "🌙";
+themeIcon.textContent = currentTheme === "dark" ? "☀️" : "🌙";
 
 themeToggle.addEventListener("click", () => {
-  const newTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+  const activeTheme = document.documentElement.getAttribute("data-theme");
+  const newTheme = activeTheme === "light" ? "dark" : "light";
+  
   document.documentElement.setAttribute("data-theme", newTheme);
   localStorage.setItem("theme", newTheme);
-  themeToggle.textContent = newTheme === "dark" ? "☀️" : "🌙";
+  themeIcon.textContent = newTheme === "dark" ? "☀️" : "🌙";
 });
 
 // Data Model
-const state = {
+let state = {
   name: "",
   teamCount: 0,
   teams: [],
@@ -31,7 +33,15 @@ function generateBracket(teams) {
     const matchCount = teams.length / Math.pow(2, round);
 
     for (let i = 0; i < matchCount; i++) {
-      matches[round].push({ team1: null, team2: null, winner: null });
+      if (round === 1) {
+        matches[round].push({
+          team1: teams[i * 2],
+          team2: teams[i * 2 + 1],
+          winner: null
+        });
+      } else {
+        matches[round].push({ team1: "TBD", team2: "TBD", winner: null });
+      }
     }
   }
 
@@ -40,25 +50,39 @@ function generateBracket(teams) {
 
 function renderBracket(matches) {
   const bracketContainer = document.getElementById("bracket-container");
+  const titleDisplay = document.getElementById("display-tournament-title");
+  
+  if (state.name) {
+    titleDisplay.textContent = `Сетка турнира: ${state.name}`;
+  }
+
   bracketContainer.innerHTML = "";
 
   Object.keys(matches).forEach((round) => {
     const roundDiv = document.createElement("div");
     roundDiv.classList.add("round");
-    roundDiv.innerHTML = `<h3>Round ${round}</h3>`;
+    
+    const roundTitle = document.createElement("div");
+    roundTitle.classList.add("round-title");
+    roundTitle.textContent = `Раунд ${round}`;
+    roundDiv.appendChild(roundTitle);
 
     matches[round].forEach((match, index) => {
       const matchCard = document.createElement("div");
       matchCard.classList.add("match-card");
-      matchCard.dataset.round = round;
-      matchCard.dataset.match = index;
+
+      const isWinner1 = match.winner && match.winner === match.team1;
+      const isWinner2 = match.winner && match.winner === match.team2;
 
       matchCard.innerHTML = `
-        <div class="team" data-team="1">${match.team1 || "TBD"}</div>
-        <div class="team" data-team="2">${match.team2 || "TBD"}</div>
+        <div class="team ${isWinner1 ? 'winner' : ''}" data-team="1">${match.team1 || "TBD"}</div>
+        <div class="team ${isWinner2 ? 'winner' : ''}" data-team="2">${match.team2 || "TBD"}</div>
       `;
 
-      matchCard.addEventListener("click", (e) => handleMatchClick(e, round, index));
+      matchCard.querySelectorAll(".team").forEach((teamEl) => {
+        teamEl.addEventListener("click", (e) => handleMatchClick(e, round, index));
+      });
+
       roundDiv.appendChild(matchCard);
     });
 
@@ -69,11 +93,12 @@ function renderBracket(matches) {
 // Interactive System
 function handleMatchClick(event, round, matchIndex) {
   const match = state.matches[round][matchIndex];
-  const selectedTeam = event.target.dataset.team;
+  const selectedTeamNum = event.target.dataset.team;
+  const selectedTeamName = match[`team${selectedTeamNum}`];
 
-  if (selectedTeam && match[`team${selectedTeam}`]) {
-    match.winner = match[`team${selectedTeam}`];
-    advanceWinner(round, matchIndex, match.winner);
+  if (selectedTeamName && selectedTeamName !== "TBD") {
+    match.winner = selectedTeamName;
+    advanceWinner(round, matchIndex, selectedTeamName);
     saveState();
     renderBracket(state.matches);
   }
@@ -99,8 +124,10 @@ function saveState() {
 function loadState() {
   const savedState = localStorage.getItem("tournamentState");
   if (savedState) {
-    Object.assign(state, JSON.parse(savedState));
-    renderBracket(state.matches);
+    state = JSON.parse(savedState);
+    if (state.matches && Object.keys(state.matches).length > 0) {
+      renderBracket(state.matches);
+    }
   }
 }
 
@@ -109,9 +136,14 @@ document.getElementById("generate-bracket").addEventListener("click", () => {
   const nameInput = document.getElementById("tournament-name");
   const teamCountInput = document.getElementById("team-count");
 
+  if (!nameInput.value || !teamCountInput.value) {
+    alert("Заполните название и выберите количество команд!");
+    return;
+  }
+
   state.name = nameInput.value;
   state.teamCount = parseInt(teamCountInput.value);
-  state.teams = Array.from({ length: state.teamCount }, (_, i) => `Team ${i + 1}`);
+  state.teams = Array.from({ length: state.teamCount }, (_, i) => `Команда ${i + 1}`);
   state.matches = generateBracket(state.teams);
 
   saveState();
